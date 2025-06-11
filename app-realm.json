@@ -1,0 +1,57 @@
+{
+  "id": "app-realm",
+  "realm": "app-realm",
+  "displayName": "Master Realm (imported)",
+  "enabled": true,
+  "passwordPolicy": "length(4)",
+  
+  "clients": [
+    {
+      "clientId": "myclient",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "pkce.code.challenge.required": "true"
+      },
+      "redirectUris": [
+        "http://localhost:9000/*"
+      ],
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false
+    }
+  ],
+
+  "users": [
+    {
+      "username": "test",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "test",
+          "temporary": false
+        }
+      ],
+      "realmRoles": []
+    },
+    {
+      "username": "admin1",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin1",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "admin"
+      ]
+    }
+  ]
+}

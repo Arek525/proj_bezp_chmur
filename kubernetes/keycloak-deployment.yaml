@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.36.0 (ae2a39403)
+  labels:
+    io.kompose.service: keycloak
+  name: keycloak
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      io.kompose.service: keycloak
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.36.0 (ae2a39403)
+      labels:
+        io.kompose.service: keycloak
+    spec:
+      containers:
+        - args:
+            - start-dev
+            - --import-realm
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: admin
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: admin
+          image: quay.io/keycloak/keycloak:26.1.4
+          name: keycloak
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/keycloak/data/import/app-realm.json
+              name: keycloak-cm0
+              readOnly: true
+              subPath: app-realm.json
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: app-realm.json
+                path: app-realm.json
+            name: keycloak-cm0
+          name: keycloak-cm0

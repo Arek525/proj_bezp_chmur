@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.36.0 (ae2a39403)
+  labels:
+    io.kompose.service: backend
+  name: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      io.kompose.service: backend
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.36.0 (ae2a39403)
+      labels:
+        io.kompose.service: backend
+    spec:
+      containers:
+        - args:
+            - node
+            - Server.js
+          env:
+            - name: PORT
+              value: "5000"
+            - name: REDIS_PORT
+              value: "6379"
+          image: arek2904/backend:1.0.0
+          imagePullPolicy: IfNotPresent
+          name: backend
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+      restartPolicy: Always

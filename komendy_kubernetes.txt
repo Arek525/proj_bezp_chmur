@@ -1,0 +1,36 @@
+po zmianach:
+docker build -t arek2904/frontend:1.0.0 ./frontend;
+docker build -t arek2904/backend:1.0.0 ./backend;
+
+
+
+kubectl apply -f ./kubernetes/frontend-deployment.yaml;
+kubectl apply -f ./kubernetes/keycloak-deployment.yaml ;
+kubectl apply -f ./kubernetes/keycloak-cm0-configmap.yaml;
+kubectl apply -f ./kubernetes/redis-deployment.yaml ;
+kubectl apply -f ./kubernetes/redis-data-persistentvolumeclaim.yaml ;
+kubectl apply -f ./kubernetes/redis-service.yaml ;
+kubectl apply -f ./kubernetes/keycloak-service.yaml ;
+kubectl apply -f ./kubernetes/frontend-service.yaml ;
+
+chwile odczekac, zeby wlaczyl sie redis
+
+kubectl get pods
+
+kubectl apply -f ./kubernetes/backend-deployment.yaml; 
+kubectl apply -f ./kubernetes/backend-service.yaml ;
+
+kubectl get pods
+
+
+
+kubectl delete pod --all;
+kubectl delete service --all;
+kubectl delete deployment --all;
+kubectl delete replicaset --all;
+
+
+
+dodac imagePullPolicy: IfNotPresent do obu deploymentow
+ustawic image na <dockerhub_username>/backend:1.0.0 i <dockerhub_username>/frontend:1.0.0
+ustawic w services Type: LoadBalancer
